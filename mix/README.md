@@ -12,6 +12,7 @@ taocp中使用的mix,gnu安装的mdk
 - mixal
   - [mixal的基本结构][mixal]
   - [mixal指令][mixal指令]
+  - [表达式][表达式]
 - 入门教程
 - 工具和周边
 - taocp 习题
@@ -21,3 +22,4 @@ taocp中使用的mix,gnu安装的mdk
 [time]: /mix/003.md
 [mixal]: /mix/004.md
 [mixal指令]: /mix/005.md
+[表达式]: /mix/006.md
