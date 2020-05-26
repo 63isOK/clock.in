@@ -16,10 +16,9 @@ taocp中使用的mix,gnu安装的mdk
   - [w-表达式][w-表达式]
   - [本地符号][本地符号]
 - 入门教程
-  - [编写和编译][编写和编译]
-  - [运行和调试][运行和调试]
-  - [mix shell的使用][mixguile]
+  - [编写/编译/运行/调试][编译调试]
 - 工具和周边
+  - 唯一需要注意的是汇编器mixasm/运行的mix环境mixvm/mdk工具套件
 - taocp 习题
 
 [install]: /mix/001.md
@@ -30,6 +29,4 @@ taocp中使用的mix,gnu安装的mdk
 [表达式]: /mix/006.md
 [w-表达式]: /mix/007.md
 [本地符号]: /mix/008.md
-[编写和编译]: /mix/009.md
-[运行和调试]: /mix/010.md
-[mixguile]: /mix/011.md
+[编译调试]: /mix/009.md
