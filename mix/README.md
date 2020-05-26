@@ -14,6 +14,7 @@ taocp中使用的mix,gnu安装的mdk
   - [mixal指令][mixal指令]
   - [表达式][表达式]
   - [w-表达式][w-表达式]
+  - [本地符号][本地符号]
 - 入门教程
 - 工具和周边
 - taocp 习题
@@ -25,3 +26,4 @@ taocp中使用的mix,gnu安装的mdk
 [mixal指令]: /mix/005.md
 [表达式]: /mix/006.md
 [w-表达式]: /mix/007.md
+[本地符号]: /mix/008.md
