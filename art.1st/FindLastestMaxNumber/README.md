@@ -5,23 +5,23 @@
     * algorithm M
     * 1.[Initialize.] k=n,j=n,m=X[n],k=n-1.
     * 2.[All tested?] return; if k>0, To M3.
-    * 3.[Compare.] if m >= X[k], To M4. others, To M5.
+    * 3.[Compare.] if m >= X[k], To M5. others, To M4.
     * 4.[Change m.] j=k,m=X[k],To M5.
     * 5.[Decrease k.] k=k-1. To M2.
     *
     * label   ins   operand     comment
     X         EQU   1000        address of array
-      | | | | ORIG  3000
-    MAXNUM    STJ   EXIT
-    INIT      ENT3  0,1
+      | | | | ORIG  3000        set function address
+    MAXNUM    STJ   EXIT        function start
+    INIT      ENT3  0,1         k = n
       | | | | JMP   CHANGEM
-    LOOP      CMPA  X,3
+    LOOP      CMPA  X,3         compare rA and A[k],also is compare A[k+1] and A[k]
       | | | | JGE   *+3
-    CHANGEM   ENT2  0,3
-      | | | | LDA   X,3
-      | | | | DEC3  1
-      | | | | JMP   LOOP
-    EXIT      JMP   *
+    CHANGEM   ENT2  0,3         j = k
+      | | | | LDA   X,3         rA = A[k]
+      | | | | DEC3  1           k = k - 1
+      | | | | J3P   LOOP        if (k>0) loop
+    EXIT      JMP   *           function return
 
 我们来具体解读一下这个例子.
 
@@ -56,3 +56,60 @@ EQU/ORIG是伪指令,因为他们是mixal的指令,而不是mix的指令,
 伪指令更多的是告诉mixasm一些信息,而不是告诉mixasm具体指令.
 
 再来看MAXNUM STJ EXIT,MAXNUM是3000,STJ是将一个地址保存到rJ中,
+
+## 时隔几天,再次分析
+
+为什么一直分析这段代码?
+
+- 第一阶段:指令运行不熟悉
+- 第二阶段:能看懂每条指令,但理解不能闭环,总感觉缺少一些东西
+
+下面抽丝剥茧的分析
+
+### 是程序还是函数
+
+程序的特点是有END指令,END表示程序的结束.
+
+如果一段代码,执行开始会保存rJ,这段代码最后,
+使用了JMP rJ类似的代码,这表示最后还是会跳回去.
+这典型就是调用子程序(也叫函数)的手法.
+
+现在再来看看上面的例子,STJ EXIT,而EXIT正是回跳 EXIT JMP xx,
+至于xx的地址具体是多少,并不重要,因为函数开始会替换成rJ.
+
+### 函数参数
+
+函数可以通过参数来获取信息,也可以通过全局变量等来获取信息,
+从上面的代码看,并没有像其他语言找那个的函数参数来处理,
+而是选用全局变量的方式来处理,这些全局变量,就是寄存器.
+
+我们先来看几个疑问,数组A的起始地址是1000,长度是多少?
+单看代码,是无法看出来的所以第一个全局变量是数组长度.
+
+函数执行过程中,会用到两个局部变量:
+指向当前最大值的j;指向当前进行比较的值k,
+他们两都是数组的索引.
+
+所以三个变量用如下寄存器表示:
+
+- rI1 = n, 表示数组长度
+- rI2 = j, 表示当前比较结果中最大值
+- rI3 = k, 表示当前进行比较的值
+
+现在让我们在上面的代码中,用注释来描述每条语句的功能.
+
+写完注释后,代码就更加清晰了,最后只剩下一个问题:
+
+循环什么时候结束?代码中的判断是k>0,为什么是>0而不是=0,
+因为数组取数据时是这么定义的:contents(A+i)用 `A[i]` 来表示,
+这句话的意思是用`A[n]`来表示第n个元素,`A[1]`表示第一个元素.
+至此,我们明白,在这题中,数组索引是从1开始的.
+
+## 最后
+
+回到之前的问题,为什么这份代码读了这么多次才弄明白?
+
+因为研究完mix/mixal之后,直接研究这份代码,而没有关注题目,
+所以根本不知道在什么场合下这份代码才有效.
+
+`在面对问题时,先不要着急解题,先将题目弄明白就成功了一半.`
